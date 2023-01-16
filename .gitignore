@@ -1,2 +1,3 @@
 # ignore streamlit files
 .streamlit/secrets.toml
+.streamlit/credentials.json
