@@ -54,7 +54,18 @@ def load_summary_data():
     # Create connector
     gsheet_connector = _get_connector()
     # Connect to the google sheet
-    gsheets_url = st.secrets.public_gsheet_url
+    gsheets_url = st.secrets["gsheets"]["summary"]
+    # Download data
+    data = _get_data(gsheet_connector, gsheets_url)
+    # Return data
+    return data
+
+## Feedback data
+def load_feedback_data():
+    # Create connector
+    gsheet_connector = _get_connector()
+    # Connect to the google sheet
+    gsheets_url = st.secrets["gsheets"]["feedback"]
     # Download data
     data = _get_data(gsheet_connector, gsheets_url)
     # Return data

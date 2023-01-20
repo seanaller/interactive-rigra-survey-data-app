@@ -4,7 +4,7 @@
 import streamlit as st
 
 # Layout
-st.set_page_config(page_title='RIGRA Winter Survey 2022', page_icon=':bar_chart:', layout='wide')
+st.set_page_config(page_title='RIGRA Winter Survey 2022', layout='wide')
 st.title('RIGRA Winter Survey 2022')
 
 # Opening Section

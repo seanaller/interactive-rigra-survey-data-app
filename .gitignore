@@ -1,3 +1,5 @@
 # ignore streamlit files
 .streamlit/secrets.toml
 .streamlit/credentials.json
+# ignore vscode
+.vscode/settings.json
