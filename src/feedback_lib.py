@@ -61,3 +61,19 @@ def feedback_all_nps_percentages(df: DataFrame, nps_type: str) -> int:
 # Questions
 def feedback_questions_average(df: DataFrame) -> DataFrame:
     return df.groupby(['question_category']).mean().reset_index()
+
+
+'''
+Sentiment data
+'''
+# Percentages - Sentiment - Positive, Neutral, Negative
+def sentiment_percentages(df: DataFrame, sen_type: str) -> int:
+    max_response = len(df['response_id'])
+    if sen_type.lower() == 'positive':
+        response_count = len(df[df['sentiment'] == 'positive'])
+    elif sen_type.lower() == 'neutral':
+        response_count = len(df[df['sentiment'] == 'neutral'])
+    elif sen_type.lower() == 'negative':
+        response_count = len(df[df['sentiment'] == 'negative'])
+    
+    return int(round((response_count/max_response) * 100, 0))

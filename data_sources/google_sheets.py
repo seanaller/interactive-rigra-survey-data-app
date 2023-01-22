@@ -70,3 +70,14 @@ def load_feedback_data():
     data = _get_data(gsheet_connector, gsheets_url)
     # Return data
     return data
+
+## Sentiment data
+def load_sentiment_data():
+    # Create connector
+    gsheet_connector = _get_connector()
+    # Connect to the google sheet
+    gsheets_url = st.secrets["gsheets"]["sentiment"]
+    # Download data
+    data = _get_data(gsheet_connector, gsheets_url)
+    # Return data
+    return data

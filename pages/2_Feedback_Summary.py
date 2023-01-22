@@ -1,7 +1,9 @@
 # Libraries
 import streamlit as st
-import pandas as pd
+import numpy as np
 import plotly.express as px
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
 
 from data_sources import google_sheets
 from src import feedback_lib
@@ -91,32 +93,7 @@ with tab1:
 ### Tab 02 - Detailed Summary
 with tab2:
     st.header("Detailed Feedback Scores")
-    
-    fig = px.box(
-        df_feedback,
-        y = "question_category",
-        x = "feedback_score",
-        orientation = 'h'
-    )
-    
-    fig.update_layout(
-        showlegend = False,
-        yaxis_title = None,
-        xaxis_title = "Feedback Score",
-        yaxis = {"categoryorder": "category descending"},
-        plot_bgcolor = colour_palette['background'],
-        margin = dict(l = 200),
-        xaxis_range=[1,5]
-    )
-    
-    fig.update_xaxes(showgrid = False)
-    fig.update_yaxes(showgrid = False)
-    
-    st.plotly_chart(
-        fig,
-        use_container_width = True,
-        theme = theme_plotly
-    )
+
 
 ### Tab 03 - Resident Type
 with tab3:
