@@ -80,57 +80,57 @@ st.write("#")
 #### Tab 1: Summary
 with tab1:
     st.header("Sentiment Analysis Summary")
-    bc_01, bc_02 = st.columns(2)
+    #bc_01, bc_02 = st.columns(2)
 
-    with bc_01:
-        # Elements
-        # > Number of free text feedback responses per question category
-        fig = px.bar(
-            df_tab_01_A,
-            y="feedback_category",
-            x="counts",
-            text=str("counts"),
-            labels={"feedback_category": "Question Category"},
-            title="Sentiment - Number of Feedback Responses",
-            orientation="h",
-            # template="simple_white"
-        )
-        fig.update_layout(
-            showlegend=False,
-            xaxis_title="Number of Feedback Responses",
-            yaxis_title=None,
-            plot_bgcolor=colour_palette["background"],
-            margin=dict(l=200),
-            yaxis={"categoryorder": "total ascending"},
-        )
-        fig.update_xaxes(showgrid=False)
-        fig.update_yaxes(showgrid=False)
-        st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
+    #with bc_01:
+    # Elements
+    # > Number of free text feedback responses per question category
+    fig = px.bar(
+        df_tab_01_A,
+        y="feedback_category",
+        x="counts",
+        text=str("counts"),
+        labels={"feedback_category": "Question Category"},
+        title="Sentiment - Number of Feedback Responses",
+        orientation="h",
+        # template="simple_white"
+    )
+    fig.update_layout(
+        showlegend=False,
+        xaxis_title="Number of Feedback Responses",
+        yaxis_title=None,
+        plot_bgcolor=colour_palette["background"],
+        margin=dict(l=200),
+        yaxis={"categoryorder": "total ascending"},
+    )
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(showgrid=False)
+    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    with bc_02:
-        # > Responses by sentiment type
-        fig = px.bar(
-            df_tab_01_B,
-            x="counts",
-            y="feedback_category",
-            color="sentiment",
-            text=str("counts"),
-            labels={"feedback_category": "Question Category"},
-            title="Sentiment - Percentage of Feedback Responses (Breakdown by Sentiment Type)",
-            orientation="h",
-            color_discrete_sequence=["red", "blue", "green"],
-        )
-        fig.update_layout(
-            xaxis_title="Number of Feedback Responses",
-            yaxis_title=None,
-            plot_bgcolor=colour_palette["background"],
-            margin=dict(l=200),
-            yaxis={"categoryorder": "total ascending"},
-        )
-        fig.update_xaxes(showgrid=False)
-        fig.update_yaxes(showgrid=False)
-        fig.update_traces(textposition="auto")
-        st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
+    #with bc_02:
+    # > Responses by sentiment type
+    fig = px.bar(
+        df_tab_01_B,
+        x="counts",
+        y="feedback_category",
+        color="sentiment",
+        text=str("counts"),
+        labels={"feedback_category": "Question Category"},
+        title="Sentiment - Percentage of Feedback Responses (Breakdown by Sentiment Type)",
+        orientation="h",
+        color_discrete_sequence=["red", "blue", "green"],
+    )
+    fig.update_layout(
+        xaxis_title="Number of Feedback Responses",
+        yaxis_title=None,
+        plot_bgcolor=colour_palette["background"],
+        margin=dict(l=200),
+        yaxis={"categoryorder": "total ascending"},
+    )
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(showgrid=False)
+    fig.update_traces(textposition="auto")
+    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 #### Tab 2: Feedback Breakdown
 with tab2:
@@ -192,37 +192,6 @@ with tab2:
     fig.update_traces(textposition="auto")
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    ## By Question
-    st.subheader("All three sentiments")
-
-    df_tri_group = (
-        df.groupby(["feedback_category", "sentiment"]).size().reset_index(name="counts")
-    )
-    df_tri_group = df_tri_group.pivot(index="sentiment", columns="feedback_category")[
-        "counts"
-    ]
-    df_tri_group = df_tri_group.T.reset_index()
-    df_tri_group['totals'] = df_tri_group['negative'] + df_tri_group['neutral'] + df_tri_group['positive']
-
-    fig = px.scatter_ternary(
-        df_tri_group,
-        a="negative",
-        b="neutral",
-        c="positive",
-        hover_name="feedback_category",
-        color="feedback_category",
-        size = 'totals',
-        size_max = 15,
-        color_discrete_map={"neutral": "blue", "positive": "green", "negative": "red"},
-    )
-    fig.update_layout(
-        plot_bgcolor=colour_palette["background"],
-    )
-    fig.update_xaxes(showgrid=False)
-    fig.update_yaxes(
-        showgrid=False, showline=False
-    )
-    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 #### Tab 3: Feedback explorer
 # Interactive feedback explorer to select and subset data using different sliders (e.g. sentiment, polarity)
@@ -230,24 +199,25 @@ with tab3:
     st.header("Sentiment Analysis Feedback Explorer")
     # > Question Category Selection
     st_q_01_tab03, st_q_02_tab03 = st.columns(2)
+    df_tab_03 = df
     with st_q_01_tab03:
         sel_question = st.selectbox(
             "Question categories for breakdown:",
             ["All"] + [x for x in list(set(df["feedback_category"]))],
         )
         if sel_question == "All":
-            df_tab_03 = df
+            df_tab_03 = df_tab_03
         else:
-            df_tab_03 = df[df["feedback_category"] == sel_question]
+            df_tab_03 = df_tab_03[df_tab_03["feedback_category"] == sel_question]
     with st_q_02_tab03:
         sel_building = st.selectbox(
             "Buildings for breakdown:",
-            ["All"] + [x for x in list(set(df["building_name"]))],
+            ["All"] + [x for x in list(set(df_tab_03["building_name"]))],
         )
         if sel_building == "All":
-            df_tab_03 = df
+            df_tab_03 = df_tab_03
         else:
-            df_tab_03 = df[df["building_name"] == sel_building]
+            df_tab_03 = df_tab_03[df_tab_03["building_name"] == sel_building]
 
     # > Selection
     sel_sentiment = st.multiselect(

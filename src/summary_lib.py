@@ -51,8 +51,15 @@ def metric_residents_leaseholder(df: DataFrame) -> int:
             "Number"
         ]
     )
-    return int(round((total_leaseholder / total_all) * 100, 0))
+    return float(round((total_leaseholder / total_all) * 100, 2))
 
+# Non-Resident Leaseholder (%)
+def metric_residents_nonresident_leaseholder(df: DataFrame) -> int:
+    total_all = metric_residents_all(df)
+    total_tenant = int(
+        df[(df["Description"] == "Non-resident leaseholder") & (df["Type"] == "resident_type")]["Number"]
+    )
+    return float(round((total_tenant / total_all) * 100, 2))
 
 # Tenant (%)
 def metric_residents_tenant(df: DataFrame) -> int:
@@ -60,4 +67,4 @@ def metric_residents_tenant(df: DataFrame) -> int:
     total_tenant = int(
         df[(df["Description"] == "Tenant") & (df["Type"] == "resident_type")]["Number"]
     )
-    return int(round((total_tenant / total_all) * 100, 0))
+    return float(round((total_tenant / total_all) * 100, 2))

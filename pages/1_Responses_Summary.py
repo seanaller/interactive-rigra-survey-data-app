@@ -19,7 +19,7 @@ df_summary = google_sheets.load_summary_data()
 
 ## Overview
 st.subheader("Overview")
-st_col_01, st_col_02, st_col_03, st_col_04 = st.columns(4)
+st_col_01, st_col_02, st_col_03, st_col_04, st_col_05 = st.columns(5)
 st_col_01.metric("All Responses", summary_lib.metric_residents_all(df_summary))
 st_col_02.metric(
     "Contactable Responses", summary_lib.metric_residents_contactable(df_summary)
@@ -27,7 +27,8 @@ st_col_02.metric(
 st_col_03.metric(
     "Leaseholders", f"{summary_lib.metric_residents_leaseholder(df_summary)}%"
 )
-st_col_04.metric("Tenants", f"{summary_lib.metric_residents_tenant(df_summary)}%")
+st_col_04.metric("Non-resident Leaseholders", f"{summary_lib.metric_residents_nonresident_leaseholder(df_summary)}%")
+st_col_05.metric("Tenants", f"{summary_lib.metric_residents_tenant(df_summary)}%")
 
 ## SPACER
 st.write("#")
