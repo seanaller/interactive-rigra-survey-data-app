@@ -3,3 +3,6 @@
 .streamlit/credentials.json
 # ignore vscode
 .vscode/settings.json
+# ignore pycache
+data_sources/__pycache__/*
+src/__pycache__/*
