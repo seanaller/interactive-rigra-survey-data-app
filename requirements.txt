@@ -1,6 +1,9 @@
-gsheetsdb==0.1.13.1
-numpy==1.23.4
-pandas==1.5.2
-plotly==5.13.0
-streamlit==1.17.0
-protobuf==3.19.5
+pip>=23.0
+
+gsheetsdb
+numpy
+pandas
+plotly
+streamlit
+
+protobuf~=3.19.0
