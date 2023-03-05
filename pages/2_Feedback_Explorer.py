@@ -78,24 +78,24 @@ sel_sentiment = st.multiselect(
 sel_sentiment = [x.lower() for x in sel_sentiment]
 df_tab_03 = df_tab_03[df_tab_03["sentiment"].isin(sel_sentiment)]
 
-## Hidden for advanced manipulation
-with st.expander("Advanced filtering"):
-    # > Sliders
-    con_polarity = st.slider(
-        "Polarity Score", min_value=-1.0, max_value=1.0, value=(-1.0, 1.0), step=0.1
-    )
-    df_tab_03 = df_tab_03[df_tab_03["polarity"] >= con_polarity[0]]
-    df_tab_03 = df_tab_03[df_tab_03["polarity"] <= con_polarity[1]]
+# ## Hidden for advanced manipulation
+# with st.expander("Advanced filtering"):
+#     # > Sliders
+#     con_polarity = st.slider(
+#         "Polarity Score", min_value=-1.0, max_value=1.0, value=(-1.0, 1.0), step=0.1
+#     )
+#     df_tab_03 = df_tab_03[df_tab_03["polarity"] >= con_polarity[0]]
+#     df_tab_03 = df_tab_03[df_tab_03["polarity"] <= con_polarity[1]]
 
-    con_subjectivity = st.slider(
-        "Subjectivity Score",
-        min_value=0.0,
-        max_value=1.0,
-        value=(0.0, 1.0),
-        step=0.1,
-    )
-    df_tab_03 = df_tab_03[df_tab_03["subjectivity"] >= con_subjectivity[0]]
-    df_tab_03 = df_tab_03[df_tab_03["subjectivity"] <= con_subjectivity[1]]
+#     con_subjectivity = st.slider(
+#         "Subjectivity Score",
+#         min_value=0.0,
+#         max_value=1.0,
+#         value=(0.0, 1.0),
+#         step=0.1,
+#     )
+#     df_tab_03 = df_tab_03[df_tab_03["subjectivity"] >= con_subjectivity[0]]
+#     df_tab_03 = df_tab_03[df_tab_03["subjectivity"] <= con_subjectivity[1]]
 
 # space
 st.write("#")

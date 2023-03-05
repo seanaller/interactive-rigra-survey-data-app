@@ -231,6 +231,66 @@ with tab1:
     fig.update_yaxes(showgrid = False)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
+    ## Question Feedback Breakdown
+    st.write('')
+    st.subheader('Breakdown of Feedback - Positive and Negative Question Feedback')
+    st.write('Note: Feedback here also takes into account the fre-text feedback (the sentiment of those answers). The higher the value, the more overall positive responses there were. The more negative the value, the more overall negative responses there were.')
+    ## Overall breakdown - positive vs negative
+    df_fb = google_sheets.load_sentiment_data()
+    df_fb_positive = (
+        df_fb[df_fb["sentiment"] == "positive"]
+        .groupby(["feedback_category", "sentiment"])
+        .size()
+        .reset_index(name="counts")
+        .rename(columns={"index": "positive"})
+    )
+    df_fb_negative = (
+        df_fb[df_fb["sentiment"] == "negative"]
+        .groupby(["feedback_category", "sentiment"])
+        .size()
+        .reset_index(name="counts")
+        .rename(columns={"index": "negative"})
+    )
+    df_fb_negative["counts"] *= -1
+    fig = make_subplots(
+        rows=1, cols=2, specs=[[{}, {}]], shared_yaxes=True, horizontal_spacing=0
+    )
+    fig.append_trace(
+        go.Bar(
+            x=df_fb_negative.counts,
+            y=df_fb_negative.feedback_category,
+            orientation="h",
+            showlegend=True,
+            #text=df_fb_negative.counts,
+            name="Negative Feedback",
+            marker_color="#b20710",
+        ),
+        1,
+        1,
+    )
+    fig.append_trace(
+        go.Bar(
+            x=df_fb_positive.counts,
+            y=df_fb_positive.feedback_category,
+            orientation="h",
+            showlegend=True,
+            #text=df_fb_positive.counts,
+            name="Positive Feedback",
+            marker_color="green",
+        ),
+        1,
+        2,
+    )
+    fig.update_layout(
+        plot_bgcolor=colour_palette["background"],
+        margin=dict(l=200),
+    )
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(
+        showgrid=False, categoryorder="total ascending", ticksuffix=" ", showline=False
+    )
+    fig.update_traces(textposition="auto")
+    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 def set_color(row):
     if row["feedback_score"] < 3:
@@ -309,66 +369,6 @@ with tab3:
         for topics_feed in list_topics_feed:
             tmp_topics = ', '.join(list(df_topics_feed['word'][df_topics_feed['topic'] == topics_feed]))
             st.write(f'{topics_feed}: {tmp_topics}')
-
-st.write('')
-st.subheader('Breakdown of Feedback - Positive and Negative Question Feedback')
-st.write('Note: Feedback here also takes into account the fre-text feedback (the sentiment of those answers). The higher the value, the more overall positive responses there were. The more negative the value, the more overall negative responses there were.')
-## Overall breakdown - positive vs negative
-df_fb = google_sheets.load_sentiment_data()
-df_fb_positive = (
-    df_fb[df_fb["sentiment"] == "positive"]
-    .groupby(["feedback_category", "sentiment"])
-    .size()
-    .reset_index(name="counts")
-    .rename(columns={"index": "positive"})
-)
-df_fb_negative = (
-    df_fb[df_fb["sentiment"] == "negative"]
-    .groupby(["feedback_category", "sentiment"])
-    .size()
-    .reset_index(name="counts")
-    .rename(columns={"index": "negative"})
-)
-df_fb_negative["counts"] *= -1
-fig = make_subplots(
-    rows=1, cols=2, specs=[[{}, {}]], shared_yaxes=True, horizontal_spacing=0
-)
-fig.append_trace(
-    go.Bar(
-        x=df_fb_negative.counts,
-        y=df_fb_negative.feedback_category,
-        orientation="h",
-        showlegend=True,
-        #text=df_fb_negative.counts,
-        name="Negative Feedback",
-        marker_color="#b20710",
-    ),
-    1,
-    1,
-)
-fig.append_trace(
-    go.Bar(
-        x=df_fb_positive.counts,
-        y=df_fb_positive.feedback_category,
-        orientation="h",
-        showlegend=True,
-        #text=df_fb_positive.counts,
-        name="Positive Feedback",
-        marker_color="green",
-    ),
-    1,
-    2,
-)
-fig.update_layout(
-    plot_bgcolor=colour_palette["background"],
-    margin=dict(l=200),
-)
-fig.update_xaxes(showgrid=False)
-fig.update_yaxes(
-    showgrid=False, categoryorder="total ascending", ticksuffix=" ", showline=False
-)
-fig.update_traces(textposition="auto")
-st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
 ## Add Footer
 add_footer()
